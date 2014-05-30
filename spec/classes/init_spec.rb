@@ -8,22 +8,19 @@ describe 'make' do
         let(:facts) {{
           :osfamily => osfamily,
         }}
-
-        it { should include_class('make::params') }
-
-        it { should contain_class('make::install') }
       end
     end
   end
 
-  context 'unsupported operating system' do
-    describe 'make class without any parameters on Solaris/Nexenta' do
+  context '"unsupported" operating system' do
+    describe 'make class with overriding package_name parameter on FreeBSD' do
+      let(:params) {{ :package_name => 'gmake' }}
       let(:facts) {{
-        :osfamily        => 'Solaris',
-        :operatingsystem => 'Nexenta',
+        :osfamily        => 'FreeBSD',
+        :operatingsystem => 'FreeBSD',
       }}
 
-      it { expect { should }.to raise_error(Puppet::Error, /Nexenta not supported/) }
+      it { should contain_package('gmake') }
     end
   end
 
